@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@apollo/react-hooks": "^3.1.5",
+    "@apollo/react-testing": "^3.1.4",
     "@material-ui/core": "^4.9.14",
     "@material-ui/icons": "^4.9.1",
     "@material-ui/styles": "^4.9.14",
@@ -14,6 +15,7 @@
     "formik": "^2.1.4",
     "formik-material-ui-elements": "file:../",
     "graphql": "^15.1.0",
+    "graphql-tag": "^2.10.3",
     "react": "^16.13.1",
     "react-apollo": "^3.1.5",
     "react-dom": "^16.13.1",
