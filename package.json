@@ -1,6 +1,6 @@
 {
   "name": "formik-material-ui-elements",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Wrapped forkmik material ui elements",
   "author": "Teamgeek",
   "license": "MIT",
@@ -81,7 +81,6 @@
   "dependencies": {
     "@types/lodash": "^4.14.155",
     "downshift": "^5.4.2",
-    "graphql": "^15.1.0",
     "lodash": "^4.17.15",
     "react-rte": "^0.16.1"
   }
