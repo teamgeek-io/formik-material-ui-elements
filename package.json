@@ -1,6 +1,6 @@
 {
   "name": "formik-material-ui-elements",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Wrapped forkmik material ui elements",
   "author": "Teamgeek",
   "license": "MIT",
@@ -39,7 +39,8 @@
     "ts-jest": "^26.1.0",
     "typescript": "^3.9.5",
     "apollo-boost": "^0.4.9",
-    "react-apollo": "^3.1.5"
+    "react-apollo": "^3.1.5",
+    "@apollo/react-hooks": "^3.1.5"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.9.14",
@@ -49,7 +50,8 @@
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "apollo-boost": "^0.4.9",
-    "react-apollo": "^3.1.5"
+    "react-apollo": "^3.1.5",
+    "@apollo/react-hooks": "^3.1.5"
   },
   "scripts": {
     "build": "rollup -c",
