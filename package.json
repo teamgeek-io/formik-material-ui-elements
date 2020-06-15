@@ -37,7 +37,9 @@
     "rollup-plugin-peer-deps-external": "^2.2.2",
     "rollup-plugin-typescript2": "^0.27.1",
     "ts-jest": "^26.1.0",
-    "typescript": "^3.9.5"
+    "typescript": "^3.9.5",
+    "apollo-boost": "^0.4.9",
+    "react-apollo": "^3.1.5"
   },
   "peerDependencies": {
     "@material-ui/core": "^4.9.14",
