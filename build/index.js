@@ -22635,17 +22635,16 @@ var useStyles$7 = styles.makeStyles(function (theme) { return ({
         display: "flex",
         justifyContent: "center",
         flexWrap: "wrap",
-        marginTop: theme.spacing(2),
         "& > *": {
             margin: theme.spacing(0.5),
         },
     },
 }); });
 var AutocompleteListField = function (_a) {
-    var field = _a.field, form = _a.form, label = _a.label, _b = _a.lookupLabel, lookupLabel = _b === void 0 ? "Lookup" : _b, _c = _a.listPath, listPath = _c === void 0 ? "edges" : _c, _d = _a.labelPath, labelPath = _d === void 0 ? "name" : _d, props = __rest(_a, ["field", "form", "label", "lookupLabel", "listPath", "labelPath"]);
+    var field = _a.field, form = _a.form, label = _a.label, _b = _a.listPath, listPath = _b === void 0 ? "edges" : _b, _c = _a.labelPath, labelPath = _c === void 0 ? "name" : _c, props = __rest(_a, ["field", "form", "label", "listPath", "labelPath"]);
     var classes = useStyles$7();
     var error = form.errors[field.name] && form.touched[field.name];
-    var _e = React.useState(), autocompleteValue = _e[0], setAutocompleteValue = _e[1];
+    var _d = React.useState(), autocompleteValue = _d[0], setAutocompleteValue = _d[1];
     var handleBlur = function () {
         form.setFieldTouched(field.name, true);
     };
@@ -22667,12 +22666,11 @@ var AutocompleteListField = function (_a) {
     }, [field.name, field.value, form, listPath]);
     var list = lodash.get(field.value, listPath, []);
     return (React__default.createElement(FormControl, { fullWidth: true, margin: "normal" },
-        React__default.createElement(InputLabel, { htmlFor: field.name, shrink: true }, label),
+        React__default.createElement(Autocomplete, __assign({ value: autocompleteValue, error: error, onBlur: handleBlur, labelPath: labelPath }, props, { label: label, onChange: handleChange })),
         React__default.createElement("div", { className: classes.list }, list.map(function (_a, idx) {
             var node = _a.node;
             return (React__default.createElement(core.Chip, { label: lodash.get(node, labelPath, ""), key: node.id, onDelete: function () { return handleDelete(idx); } }));
-        })),
-        React__default.createElement(Autocomplete, __assign({ value: autocompleteValue, error: error, onBlur: handleBlur, labelPath: labelPath }, props, { label: lookupLabel, onChange: handleChange }))));
+        }))));
 };
 
 exports.AutocompleteField = AutocompleteField;

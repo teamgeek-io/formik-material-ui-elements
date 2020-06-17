@@ -3,7 +3,6 @@ import React, { useCallback, useState } from "react"
 
 import { Chip } from "@material-ui/core"
 import FormControl from "@material-ui/core/FormControl"
-import InputLabel from "@material-ui/core/InputLabel"
 import { makeStyles } from "@material-ui/core/styles"
 
 import Autocomplete, { Props as AutocompleteProps } from "./Autocomplete"
@@ -30,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
     flexWrap: "wrap",
-    marginTop: theme.spacing(2),
     "& > *": {
       margin: theme.spacing(0.5),
     },
@@ -41,7 +39,6 @@ const AutocompleteListField: React.FC<Props> = ({
   field,
   form,
   label,
-  lookupLabel = "Lookup",
   listPath = "edges",
   labelPath = "name",
   ...props
@@ -82,9 +79,15 @@ const AutocompleteListField: React.FC<Props> = ({
 
   return (
     <FormControl fullWidth margin="normal">
-      <InputLabel htmlFor={field.name} shrink>
-        {label}
-      </InputLabel>
+      <Autocomplete
+        value={autocompleteValue}
+        error={error}
+        onBlur={handleBlur}
+        labelPath={labelPath}
+        {...props}
+        label={label}
+        onChange={handleChange}
+      />
       <div className={classes.list}>
         {list.map(({ node }: { node: any }, idx: number) => (
           <Chip
@@ -94,15 +97,6 @@ const AutocompleteListField: React.FC<Props> = ({
           />
         ))}
       </div>
-      <Autocomplete
-        value={autocompleteValue}
-        error={error}
-        onBlur={handleBlur}
-        labelPath={labelPath}
-        {...props}
-        label={lookupLabel}
-        onChange={handleChange}
-      />
     </FormControl>
   )
 }
