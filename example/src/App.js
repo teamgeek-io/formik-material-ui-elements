@@ -1,7 +1,7 @@
 import "./App.css";
 
 import { Field, Formik } from "formik";
-import { AutocompleteField, EmailField, PasswordField, RichTextField, SubmitButton, SwitchField, TextField } from "formik-material-ui-elements";
+import { AutocompleteField, AutocompleteListField, EmailField, PasswordField, RichTextField, SubmitButton, SwitchField, TextField } from "formik-material-ui-elements";
 import gql from "graphql-tag"
 import React from "react";
 
@@ -70,7 +70,7 @@ function App() {
   return (
     <div className={classes.root}>
       <MockedProvider mocks={mocks} addTypename={false}>
-        <Formik initialValues={{}}>
+        <Formik initialValues={{ autolist: {edges: [ {node: {name: "Test 5", id: "5"}} ]} }}>
           {({ values }) => (
             <div className="form">
               <Field component={TextField} id="text" name="text" label="Text" />
@@ -83,6 +83,15 @@ function App() {
                 id="auto"
                 name="auto"
                 label="Auto"
+                connectionName="tags"
+                query={GET_TAGS_QUERY}
+                labelPath="name"
+              />
+              <Field
+                component={AutocompleteListField}
+                id="autolist"
+                name="autolist"
+                label="Auto List"
                 connectionName="tags"
                 query={GET_TAGS_QUERY}
                 labelPath="name"
