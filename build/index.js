@@ -30,6 +30,7 @@ var MuiDialogTitle = _interopDefault(require('@material-ui/core/DialogTitle'));
 var Typography = _interopDefault(require('@material-ui/core/Typography'));
 var CloseIcon = _interopDefault(require('@material-ui/icons/Close'));
 var MuiDialogActions = _interopDefault(require('@material-ui/core/DialogActions'));
+var core = require('@material-ui/core');
 
 /*! *****************************************************************************
 Copyright (c) Microsoft Corporation.
@@ -67,6 +68,14 @@ function __rest(s, e) {
                 t[p[i]] = s[p[i]];
         }
     return t;
+}
+
+function __spreadArrays() {
+    for (var s = 0, i = 0, il = arguments.length; i < il; i++) s += arguments[i].length;
+    for (var r = Array(s), k = 0, i = 0; i < il; i++)
+        for (var a = arguments[i], j = 0, jl = a.length; j < jl; j++, k++)
+            r[k] = a[j];
+    return r;
 }
 
 var identity = function (value) { return value; };
@@ -22347,10 +22356,9 @@ var useStyles$1 = makeStyles({
         flexGrow: 1,
     },
 });
-var AutocompleteField = function (_a) {
+var Autocomplete = function (_a) {
     var _b;
-    var connectionName = _a.connectionName, field = _a.field, form = _a.form, labelExtractor = _a.labelExtractor, _c = _a.labelPath, labelPath = _c === void 0 ? "name" : _c, _d = _a.placeholder, placeholder = _d === void 0 ? "Search" : _d, query = _a.query, _e = _a.searchVariable, searchVariable = _e === void 0 ? "filter" : _e, valueExtractor = _a.valueExtractor, _f = _a.valuePath, valuePath = _f === void 0 ? "id" : _f, props = __rest(_a, ["connectionName", "field", "form", "labelExtractor", "labelPath", "placeholder", "query", "searchVariable", "valueExtractor", "valuePath"]);
-    var error = form.errors[field.name] && form.touched[field.name];
+    var connectionName = _a.connectionName, value = _a.value, error = _a.error, labelExtractor = _a.labelExtractor, _c = _a.labelPath, labelPath = _c === void 0 ? "name" : _c, _d = _a.placeholder, placeholder = _d === void 0 ? "Search" : _d, query = _a.query, _e = _a.searchVariable, searchVariable = _e === void 0 ? "filter" : _e, valueExtractor = _a.valueExtractor, _f = _a.valuePath, valuePath = _f === void 0 ? "id" : _f, onBlur = _a.onBlur, onChange = _a.onChange, props = __rest(_a, ["connectionName", "value", "error", "labelExtractor", "labelPath", "placeholder", "query", "searchVariable", "valueExtractor", "valuePath", "onBlur", "onChange"]);
     var _g = React.useState([]), suggestions = _g[0], setSuggestions = _g[1];
     var _h = React.useState(null), selectedItem = _h[0], setSelectedItem = _h[1];
     var inputEl = React.useRef(null);
@@ -22395,17 +22403,14 @@ var AutocompleteField = function (_a) {
     }, [connectionName, extractLabel, extractValue, result]);
     React.useEffect(function () {
         var item = null;
-        if (field.value) {
+        if (value) {
             item = {
-                label: extractLabel(field.value),
-                value: extractValue(field.value),
+                label: extractLabel(value),
+                value: extractValue(value),
             };
         }
         setSelectedItem(item);
-    }, [extractLabel, extractValue, field.value]);
-    var handleBlur = function () {
-        form.setFieldTouched(field.name, true);
-    };
+    }, [extractLabel, extractValue, value]);
     var handleChange = function (selectedItem) {
         var value = null;
         if (selectedItem) {
@@ -22413,12 +22418,12 @@ var AutocompleteField = function (_a) {
             lodash.set(value, labelPath, selectedItem.label);
             lodash.set(value, valuePath, selectedItem.value);
         }
-        form.setFieldValue(field.name, value);
+        onChange(value);
     };
     var renderDownshift = function (downshift) {
         var clearSelection = downshift.clearSelection, getInputProps = downshift.getInputProps, getItemProps = downshift.getItemProps, getLabelProps = downshift.getLabelProps, getMenuProps = downshift.getMenuProps, highlightedIndex = downshift.highlightedIndex, isOpen = downshift.isOpen, openMenu = downshift.openMenu, selectedItem = downshift.selectedItem;
         var _a = getInputProps({
-            onBlur: handleBlur,
+            onBlur: onBlur,
             onChange: function (event) {
                 var _a;
                 if (event.target.value === "") {
@@ -22432,19 +22437,19 @@ var AutocompleteField = function (_a) {
             },
             onFocus: openMenu,
             placeholder: placeholder,
-        }), onBlur = _a.onBlur, onChange = _a.onChange, onFocus = _a.onFocus, inputProps = __rest(_a, ["onBlur", "onChange", "onFocus"]);
+        }), handleBlur = _a.onBlur, onChange = _a.onChange, onFocus = _a.onFocus, inputProps = __rest(_a, ["onBlur", "onChange", "onFocus"]);
         return (React__default.createElement("div", { className: classes.container },
             React__default.createElement(Input, __assign({ error: error, fullWidth: true, 
                 // eslint-disable-next-line react/prop-types
-                helperText: error ? form.errors[field.name] : "", InputLabelProps: getLabelProps(), InputProps: {
-                    onBlur: onBlur,
+                helperText: error ? error : "", InputLabelProps: getLabelProps(), InputProps: {
+                    onBlur: handleBlur,
                     onChange: onChange,
                     onFocus: onFocus,
                     classes: {
                         root: classes.inputRoot,
                         input: classes.inputInput,
                     },
-                }, inputProps: inputProps, inputRef: inputEl, loading: result.loading, onClear: clearSelection }, props)),
+                }, inputProps: inputProps, inputRef: inputEl, loading: result.loading, onClear: clearSelection, margin: "normal" }, props)),
             React__default.createElement(Popper, { anchorEl: inputEl.current, open: isOpen, style: { zIndex: 1400 } },
                 React__default.createElement("div", __assign({}, (isOpen ? getMenuProps({}, { suppressRefError: true }) : {})),
                     React__default.createElement(Paper, { square: true, style: {
@@ -22455,6 +22460,20 @@ var AutocompleteField = function (_a) {
                         } }, suggestions.map(function (suggestion, index) { return (React__default.createElement(Suggestion, { highlightedIndex: highlightedIndex, index: index, itemProps: getItemProps({ item: suggestion }), key: suggestion.value, label: suggestion.label, selectedItem: selectedItem, value: suggestion.value })); }))))));
     };
     return (React__default.createElement(Downshift, { itemToString: function (item) { return (item ? item.label : ""); }, onChange: handleChange, selectedItem: selectedItem }, renderDownshift));
+};
+
+var identity$1 = function (value) { return value; };
+var AutocompleteField = function (_a) {
+    var field = _a.field, form = _a.form, _b = _a.normalize, normalize = _b === void 0 ? identity$1 : _b, props = __rest(_a, ["field", "form", "normalize"]);
+    var error = form.errors[field.name] && form.touched[field.name];
+    var handleBlur = function () {
+        form.setFieldTouched(field.name, true);
+    };
+    var handleChange = function (val) {
+        var value = normalize(val);
+        form.setFieldValue(field.name, value);
+    };
+    return (React__default.createElement(Autocomplete, __assign({ error: error, onBlur: handleBlur }, props, { onChange: handleChange })));
 };
 
 var PasswordField = function (props) {
@@ -22611,7 +22630,53 @@ var DialogActions = styles.withStyles(function (theme) { return ({
     },
 }); })(MuiDialogActions);
 
+var useStyles$7 = styles.makeStyles(function (theme) { return ({
+    list: {
+        display: "flex",
+        justifyContent: "center",
+        flexWrap: "wrap",
+        marginTop: theme.spacing(2),
+        "& > *": {
+            margin: theme.spacing(0.5),
+        },
+    },
+}); });
+var AutocompleteListField = function (_a) {
+    var field = _a.field, form = _a.form, label = _a.label, _b = _a.lookupLabel, lookupLabel = _b === void 0 ? "Lookup" : _b, _c = _a.listPath, listPath = _c === void 0 ? "edges" : _c, _d = _a.labelPath, labelPath = _d === void 0 ? "name" : _d, props = __rest(_a, ["field", "form", "label", "lookupLabel", "listPath", "labelPath"]);
+    var classes = useStyles$7();
+    var error = form.errors[field.name] && form.touched[field.name];
+    var _e = React.useState(), autocompleteValue = _e[0], setAutocompleteValue = _e[1];
+    var handleBlur = function () {
+        form.setFieldTouched(field.name, true);
+    };
+    var handleChange = React.useCallback(function (val) {
+        var list = lodash.get(field.value, listPath, []);
+        var newList = __spreadArrays(list, [{ node: __assign({}, val) }]);
+        var newValue = __assign({}, field.value);
+        newValue[listPath] = newList;
+        form.setFieldValue(field.name, newValue);
+        setAutocompleteValue(undefined);
+    }, [field.name, field.value, form, listPath]);
+    var handleDelete = React.useCallback(function (idx) {
+        var list = lodash.get(field.value, listPath, []);
+        var newList = __spreadArrays(list);
+        newList.splice(idx, 1);
+        var newValue = __assign({}, field.value);
+        newValue[listPath] = newList;
+        form.setFieldValue(field.name, newValue);
+    }, [field.name, field.value, form, listPath]);
+    var list = lodash.get(field.value, listPath, []);
+    return (React__default.createElement(FormControl, { fullWidth: true, margin: "normal" },
+        React__default.createElement(InputLabel, { htmlFor: field.name, shrink: true }, label),
+        React__default.createElement("div", { className: classes.list }, list.map(function (_a, idx) {
+            var node = _a.node;
+            return (React__default.createElement(core.Chip, { label: lodash.get(node, labelPath, ""), key: node.id, onDelete: function () { return handleDelete(idx); } }));
+        })),
+        React__default.createElement(Autocomplete, __assign({ value: autocompleteValue, error: error, onBlur: handleBlur, labelPath: labelPath }, props, { label: lookupLabel, onChange: handleChange }))));
+};
+
 exports.AutocompleteField = AutocompleteField;
+exports.AutocompleteListField = AutocompleteListField;
 exports.Button = Button;
 exports.DialogActions = DialogActions;
 exports.DialogTitle = DialogTitle;

@@ -26,30 +26,22 @@ const useStyles = makeStyles({
   },
 })
 
-interface Props extends OutlinedTextFieldProps {
+export interface Props extends OutlinedTextFieldProps {
   connectionName: string
-  field: {
-    name: string
-    value: any
-  }
-  form: {
-    errors: { [key: string]: any }
-    touched: { [key: string]: any }
-    setFieldValue: (name: string, value: any) => void
-    setFieldTouched: (name: string, touched: boolean) => void
-  }
   query: DocumentNode
   labelExtractor?(item: any): string
   labelPath?: string
   searchVariable?: string
   valueExtractor?(item: any): any
   valuePath?: string
+  onChange(value: any): void
+  error?: any
 }
 
-const AutocompleteField: React.FC<Props> = ({
+const Autocomplete: React.FC<Props> = ({
   connectionName,
-  field,
-  form,
+  value,
+  error,
   labelExtractor,
   labelPath = "name",
   placeholder = "Search",
@@ -57,10 +49,10 @@ const AutocompleteField: React.FC<Props> = ({
   searchVariable = "filter",
   valueExtractor,
   valuePath = "id",
+  onBlur,
+  onChange,
   ...props
 }: Props) => {
-  const error = form.errors[field.name] && form.touched[field.name]
-
   const [suggestions, setSuggestions] = useState<any[]>([])
   const [selectedItem, setSelectedItem] = useState<any>(null)
 
@@ -119,18 +111,14 @@ const AutocompleteField: React.FC<Props> = ({
 
   useEffect(() => {
     let item = null
-    if (field.value) {
+    if (value) {
       item = {
-        label: extractLabel(field.value),
-        value: extractValue(field.value),
+        label: extractLabel(value),
+        value: extractValue(value),
       }
     }
     setSelectedItem(item)
-  }, [extractLabel, extractValue, field.value])
-
-  const handleBlur = (): void => {
-    form.setFieldTouched(field.name, true)
-  }
+  }, [extractLabel, extractValue, value])
 
   const handleChange = (selectedItem: any): void => {
     let value = null
@@ -139,7 +127,7 @@ const AutocompleteField: React.FC<Props> = ({
       _.set(value, labelPath, selectedItem.label)
       _.set(value, valuePath, selectedItem.value)
     }
-    form.setFieldValue(field.name, value)
+    onChange(value)
   }
 
   const renderDownshift = (
@@ -157,8 +145,13 @@ const AutocompleteField: React.FC<Props> = ({
       selectedItem,
     } = downshift
 
-    const { onBlur, onChange, onFocus, ...inputProps } = getInputProps({
+    const {
       onBlur: handleBlur,
+      onChange,
+      onFocus,
+      ...inputProps
+    } = getInputProps({
+      onBlur,
       onChange: (event: any) => {
         if (event.target.value === "") {
           clearSelection()
@@ -178,10 +171,10 @@ const AutocompleteField: React.FC<Props> = ({
           error={error}
           fullWidth
           // eslint-disable-next-line react/prop-types
-          helperText={error ? form.errors[field.name] : ""}
+          helperText={error ? error : ""}
           InputLabelProps={getLabelProps()}
           InputProps={{
-            onBlur,
+            onBlur: handleBlur,
             onChange,
             onFocus,
             classes: {
@@ -193,6 +186,7 @@ const AutocompleteField: React.FC<Props> = ({
           inputRef={inputEl}
           loading={result.loading}
           onClear={clearSelection}
+          margin="normal"
           {...props}
         />
         <Popper
@@ -241,4 +235,4 @@ const AutocompleteField: React.FC<Props> = ({
   )
 }
 
-export default AutocompleteField
+export default Autocomplete

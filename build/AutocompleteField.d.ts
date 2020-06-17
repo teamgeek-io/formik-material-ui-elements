@@ -1,8 +1,6 @@
-import { DocumentNode } from "apollo-boost";
 import React from "react";
-import { OutlinedTextFieldProps } from "@material-ui/core/TextField";
-interface Props extends OutlinedTextFieldProps {
-    connectionName: string;
+import { Props as AutocompleteProps } from "./Autocomplete";
+interface Props extends AutocompleteProps {
     field: {
         name: string;
         value: any;
@@ -17,12 +15,8 @@ interface Props extends OutlinedTextFieldProps {
         setFieldValue: (name: string, value: any) => void;
         setFieldTouched: (name: string, touched: boolean) => void;
     };
-    query: DocumentNode;
-    labelExtractor?(item: any): string;
-    labelPath?: string;
-    searchVariable?: string;
-    valueExtractor?(item: any): any;
-    valuePath?: string;
+    normalize?: (value: string) => string;
+    [name: string]: any;
 }
 declare const AutocompleteField: React.FC<Props>;
 export default AutocompleteField;
