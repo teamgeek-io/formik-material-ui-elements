@@ -22484,6 +22484,9 @@ var RichTextEditor = typeof window !== "undefined" ? require("react-rte").defaul
 var useStyles$2 = styles.makeStyles(function (theme) { return ({
     container: {
         paddingTop: theme.spacing(3),
+        "& > div": {
+            background: "transparent",
+        },
     },
 }); });
 var RichTextEditorField = function (_a) {

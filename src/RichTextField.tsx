@@ -11,6 +11,9 @@ const RichTextEditor =
 const useStyles = makeStyles((theme) => ({
   container: {
     paddingTop: theme.spacing(3),
+    "& > div": {
+      background: "transparent",
+    },
   },
 }))
 
