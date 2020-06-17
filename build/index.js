@@ -22641,21 +22641,28 @@ var useStyles$7 = styles.makeStyles(function (theme) { return ({
     },
 }); });
 var AutocompleteListField = function (_a) {
-    var field = _a.field, form = _a.form, label = _a.label, _b = _a.listPath, listPath = _b === void 0 ? "edges" : _b, _c = _a.labelPath, labelPath = _c === void 0 ? "name" : _c, props = __rest(_a, ["field", "form", "label", "listPath", "labelPath"]);
+    var field = _a.field, form = _a.form, label = _a.label, _b = _a.listPath, listPath = _b === void 0 ? "edges" : _b, _c = _a.labelPath, labelPath = _c === void 0 ? "name" : _c, _d = _a.allowDuplicates, allowDuplicates = _d === void 0 ? false : _d, props = __rest(_a, ["field", "form", "label", "listPath", "labelPath", "allowDuplicates"]);
     var classes = useStyles$7();
     var error = form.errors[field.name] && form.touched[field.name];
-    var _d = React.useState(), autocompleteValue = _d[0], setAutocompleteValue = _d[1];
+    var _e = React.useState(), autocompleteValue = _e[0], setAutocompleteValue = _e[1];
     var handleBlur = function () {
         form.setFieldTouched(field.name, true);
     };
     var handleChange = React.useCallback(function (val) {
         var list = lodash.get(field.value, listPath, []);
+        var existing = lodash.find(list, function (_a) {
+            var node = _a.node;
+            return node.id === val.id;
+        });
+        if (existing && !allowDuplicates) {
+            return;
+        }
         var newList = __spreadArrays(list, [{ node: __assign({}, val) }]);
         var newValue = __assign({}, field.value);
         newValue[listPath] = newList;
         form.setFieldValue(field.name, newValue);
         setAutocompleteValue(undefined);
-    }, [field.name, field.value, form, listPath]);
+    }, [field.name, field.value, form, listPath, allowDuplicates]);
     var handleDelete = React.useCallback(function (idx) {
         var list = lodash.get(field.value, listPath, []);
         var newList = __spreadArrays(list);

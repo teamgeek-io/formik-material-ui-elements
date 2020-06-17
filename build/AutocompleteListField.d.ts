@@ -18,6 +18,7 @@ interface Props extends AutocompleteProps {
     normalize?: (value: string) => string;
     listPath?: string;
     [name: string]: any;
+    allowDuplicates: boolean;
 }
 declare const AutocompleteListField: React.FC<Props>;
 export default AutocompleteListField;

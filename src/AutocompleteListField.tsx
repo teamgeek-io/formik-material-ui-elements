@@ -22,6 +22,7 @@ interface Props extends AutocompleteProps {
   normalize?: (value: string) => string
   listPath?: string
   [name: string]: any
+  allowDuplicates: boolean
 }
 
 const useStyles = makeStyles((theme) => ({
@@ -41,6 +42,7 @@ const AutocompleteListField: React.FC<Props> = ({
   label,
   listPath = "edges",
   labelPath = "name",
+  allowDuplicates = false,
   ...props
 }: Props) => {
   const classes = useStyles()
@@ -54,13 +56,19 @@ const AutocompleteListField: React.FC<Props> = ({
   const handleChange = useCallback(
     (val: any): void => {
       const list = _.get(field.value, listPath, [])
+      const existing = _.find(list, ({ node }: { node: any }) => {
+        return node.id === val.id
+      })
+      if (existing && !allowDuplicates) {
+        return
+      }
       const newList = [...list, { node: { ...val } }]
       const newValue = { ...field.value }
       newValue[listPath] = newList
       form.setFieldValue(field.name, newValue)
       setAutocompleteValue(undefined)
     },
-    [field.name, field.value, form, listPath],
+    [field.name, field.value, form, listPath, allowDuplicates],
   )
 
   const handleDelete = useCallback(
