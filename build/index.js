@@ -22403,7 +22403,6 @@ var Autocomplete = function (_a) {
     }, [connectionName, extractLabel, extractValue, result]);
     React.useEffect(function () {
         var item = null;
-        console.log(value);
         if (value) {
             item = {
                 label: extractLabel(value),
