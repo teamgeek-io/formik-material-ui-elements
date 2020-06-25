@@ -22396,6 +22396,7 @@ var Autocomplete = function (_a) {
     }, [connectionName, extractLabel, extractValue, result]);
     useEffect(function () {
         var item = null;
+        console.log(value);
         if (value) {
             item = {
                 label: extractLabel(value),
@@ -22466,7 +22467,7 @@ var AutocompleteField = function (_a) {
         var value = normalize(val);
         form.setFieldValue(field.name, value);
     };
-    return (React.createElement(Autocomplete, __assign({ error: error, onBlur: handleBlur }, props, { onChange: handleChange })));
+    return (React.createElement(Autocomplete, __assign({ value: form.values[field.name], error: error, onBlur: handleBlur }, props, { onChange: handleChange })));
 };
 
 var PasswordField = function (props) {

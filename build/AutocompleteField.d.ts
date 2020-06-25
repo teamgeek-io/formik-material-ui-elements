@@ -6,6 +6,9 @@ interface Props extends AutocompleteProps {
         value: any;
     };
     form: {
+        values: {
+            [key: string]: any;
+        };
         errors: {
             [key: string]: any;
         };

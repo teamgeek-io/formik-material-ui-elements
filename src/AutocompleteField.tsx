@@ -9,6 +9,7 @@ interface Props extends AutocompleteProps {
     value: any
   }
   form: {
+    values: { [key: string]: any }
     errors: { [key: string]: any }
     touched: { [key: string]: any }
     setFieldValue: (name: string, value: any) => void
@@ -39,6 +40,7 @@ const AutocompleteField: React.FC<Props> = ({
 
   return (
     <Autocomplete
+      value={form.values[field.name]}
       error={error}
       onBlur={handleBlur}
       {...props}
