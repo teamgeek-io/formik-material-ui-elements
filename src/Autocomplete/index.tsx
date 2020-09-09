@@ -108,18 +108,16 @@ const Autocomplete: React.FC<Props> = ({
           label: extractLabel(edge.node),
           value: extractValue(edge.node),
         }))
-      }
-      else if (resultPath) {
+      } else if (resultPath) {
         const list = _.get(result.data, `${resultPath}`)
         suggestions = _.map(list, (item: any) => ({
           label: extractLabel(item),
           value: extractValue(item),
         }))
-      }
-      else {
+      } else {
         console.warn(
           "Neither connection path nor result path have been set \
-          on the autocomplete field, so the options can't be fetched."
+          on the autocomplete field, so the options can't be fetched.",
         )
       }
     }
