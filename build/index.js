@@ -22402,12 +22402,14 @@ var Autocomplete = function (_a) {
             }
             else if (resultPath) {
                 var list = lodash.get(result.data, "" + resultPath);
-                console.log(list);
                 suggestions = lodash.map(list, function (item) { return ({
                     label: extractLabel(item),
                     value: extractValue(item),
                 }); });
-                console.log(suggestions);
+            }
+            else {
+                console.warn("Neither connection path nor result path have been set \
+          on the autocomplete field, so the options can't be fetched.");
             }
         }
         setSuggestions(suggestions);
