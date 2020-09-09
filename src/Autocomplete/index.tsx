@@ -28,6 +28,7 @@ const useStyles = makeStyles({
 
 export interface Props extends OutlinedTextFieldProps {
   connectionName: string
+  resultPath: string
   query: DocumentNode
   labelExtractor?(item: any): string
   labelPath?: string
@@ -40,6 +41,7 @@ export interface Props extends OutlinedTextFieldProps {
 
 const Autocomplete: React.FC<Props> = ({
   connectionName,
+  resultPath,
   value,
   error,
   labelExtractor,
@@ -100,14 +102,25 @@ const Autocomplete: React.FC<Props> = ({
   useEffect(() => {
     let suggestions: any[] = []
     if (!result.loading && result.data) {
-      const edges = _.get(result.data, `${connectionName}.edges`)
-      suggestions = _.map(edges, (edge: any) => ({
-        label: extractLabel(edge.node),
-        value: extractValue(edge.node),
-      }))
+      if (connectionName) {
+        const edges = _.get(result.data, `${connectionName}.edges`)
+        suggestions = _.map(edges, (edge: any) => ({
+          label: extractLabel(edge.node),
+          value: extractValue(edge.node),
+        }))
+      }
+      else if (resultPath) {
+        const list = _.get(result.data, `${resultPath}`)
+        console.log(list)
+        suggestions = _.map(list, (item: any) => ({
+          label: extractLabel(item),
+          value: extractValue(item),
+        }))
+        console.log(suggestions)
+      }
     }
     setSuggestions(suggestions)
-  }, [connectionName, extractLabel, extractValue, result])
+  }, [connectionName, resultPath, extractLabel, extractValue, result])
 
   useEffect(() => {
     let item = null

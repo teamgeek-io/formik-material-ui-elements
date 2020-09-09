@@ -22358,7 +22358,7 @@ var useStyles$1 = makeStyles({
 });
 var Autocomplete = function (_a) {
     var _b;
-    var connectionName = _a.connectionName, value = _a.value, error = _a.error, labelExtractor = _a.labelExtractor, _c = _a.labelPath, labelPath = _c === void 0 ? "name" : _c, _d = _a.placeholder, placeholder = _d === void 0 ? "Search" : _d, query = _a.query, _e = _a.searchVariable, searchVariable = _e === void 0 ? "filter" : _e, valueExtractor = _a.valueExtractor, _f = _a.valuePath, valuePath = _f === void 0 ? "id" : _f, onBlur = _a.onBlur, onChange = _a.onChange, props = __rest(_a, ["connectionName", "value", "error", "labelExtractor", "labelPath", "placeholder", "query", "searchVariable", "valueExtractor", "valuePath", "onBlur", "onChange"]);
+    var connectionName = _a.connectionName, resultPath = _a.resultPath, value = _a.value, error = _a.error, labelExtractor = _a.labelExtractor, _c = _a.labelPath, labelPath = _c === void 0 ? "name" : _c, _d = _a.placeholder, placeholder = _d === void 0 ? "Search" : _d, query = _a.query, _e = _a.searchVariable, searchVariable = _e === void 0 ? "filter" : _e, valueExtractor = _a.valueExtractor, _f = _a.valuePath, valuePath = _f === void 0 ? "id" : _f, onBlur = _a.onBlur, onChange = _a.onChange, props = __rest(_a, ["connectionName", "resultPath", "value", "error", "labelExtractor", "labelPath", "placeholder", "query", "searchVariable", "valueExtractor", "valuePath", "onBlur", "onChange"]);
     var _g = React.useState([]), suggestions = _g[0], setSuggestions = _g[1];
     var _h = React.useState(null), selectedItem = _h[0], setSelectedItem = _h[1];
     var inputEl = React.useRef(null);
@@ -22393,14 +22393,25 @@ var Autocomplete = function (_a) {
     React.useEffect(function () {
         var suggestions = [];
         if (!result.loading && result.data) {
-            var edges = lodash.get(result.data, connectionName + ".edges");
-            suggestions = lodash.map(edges, function (edge) { return ({
-                label: extractLabel(edge.node),
-                value: extractValue(edge.node),
-            }); });
+            if (connectionName) {
+                var edges = lodash.get(result.data, connectionName + ".edges");
+                suggestions = lodash.map(edges, function (edge) { return ({
+                    label: extractLabel(edge.node),
+                    value: extractValue(edge.node),
+                }); });
+            }
+            else if (resultPath) {
+                var list = lodash.get(result.data, "" + resultPath);
+                console.log(list);
+                suggestions = lodash.map(list, function (item) { return ({
+                    label: extractLabel(item),
+                    value: extractValue(item),
+                }); });
+                console.log(suggestions);
+            }
         }
         setSuggestions(suggestions);
-    }, [connectionName, extractLabel, extractValue, result]);
+    }, [connectionName, resultPath, extractLabel, extractValue, result]);
     React.useEffect(function () {
         var item = null;
         if (value) {
