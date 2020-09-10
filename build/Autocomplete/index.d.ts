@@ -3,6 +3,7 @@ import React from "react";
 import { OutlinedTextFieldProps } from "@material-ui/core/TextField";
 export interface Props extends OutlinedTextFieldProps {
     connectionName: string;
+    resultPath: string;
     query: DocumentNode;
     labelExtractor?(item: any): string;
     labelPath?: string;
